@@ -11,5 +11,9 @@
     </nav>
     <p> Вы забронировали парковочное место № {{ reservation.parking_space.id }} </p>
         <hr>
+        <a href="{% url 'parking_systems:booking' %}"
+               class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Создать новое бронирование</a>
+        <a href="{% url 'parking_systems:update_reservation' reservation.id %}"
+               class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Редактировать бронирование</a>
 {% endblock %}
 </div>

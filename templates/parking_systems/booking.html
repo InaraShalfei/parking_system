@@ -9,12 +9,21 @@
     <div class="col-md-8 p-5">
         <div class="card">
             <div class="card-header">
+                {% if form.instance.id %}
+                Редактировать бронирование
+                {% else %}
                 Создать новое бронирование
+                {% endif %}
             </div>
             <div class="card-body">
                 <form
                         method="POST" enctype="multipart/form-data"
+                        {% if form.instance.id %}
+                        action="{% url 'parking_systems:update_reservation' reservation.id %}"
+                        {% else %}
+
                         action="{% url 'parking_systems:booking' %}"
+                        {% endif %}
                 >
 
                     {% csrf_token %}
@@ -32,12 +41,14 @@
                             {{ field|addclass:"form-control" }}
                         </div>
                     </div>
-                        {% endfor %}
+                    {% endfor %}
                     <div class="card">
 
                         <button type="submit" class="btn btn-outline-dark">
                             Сохранить
                         </button>
+                        <a class="btn btn-outline-dark"
+                           href="{% url 'parking_systems:index' %}">Отменить</a>
                     </div>
                 </form>
             </div>

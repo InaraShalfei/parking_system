@@ -24,3 +24,10 @@ def reservation(request, reservation_id):
     return render(request, 'parking_systems/reservation.html', {'reservation': reservation})
 
 
+def update_reservation(request, reservation_id):
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+    form = BookingForm(request.POST or None, instance=reservation)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('parking_systems:reservation', reservation_id=reservation.id)
+    return render(request, 'parking_systems/booking.html', {'form': form, 'reservation': reservation})
