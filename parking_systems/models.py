@@ -4,6 +4,9 @@ from django.db import models
 class Parking(models.Model):
     number = models.IntegerField(primary_key=True, unique=True, verbose_name='Номер парковочного места')
 
+    def __str__(self):
+        return f'Парковочное место № {self.number}'
+
 
 class Reservation(models.Model):
     parking_space = models.ForeignKey(Parking, on_delete=models.CASCADE, related_name='reservations',
