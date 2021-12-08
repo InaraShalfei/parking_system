@@ -4,5 +4,10 @@
 </div>{% endblock %}
 {% block content %}
 <div class="container">
+    {% if user.is_authenticated %}
+    {% for slot in parking_slots %}
+    <p><strong>{{ slot }}</strong></p>
+    {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}
