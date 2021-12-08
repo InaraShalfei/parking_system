@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Бронирование{% endblock %}
+<h1>{% block header %}{% endblock %}</h1>
+
+
+{% block content %}
+{% load user_filters %}
+<div class="row justify-content-center">
+    <div class="col-md-8 p-5">
+        <div class="card">
+            <div class="card-header">
+                Создать новое бронирование
+            </div>
+            <div class="card-body">
+                <form
+                        method="POST" enctype="multipart/form-data"
+                        action="{% url 'parking_systems:booking' %}"
+                >
+
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                    <div
+                            class="form-group row"
+                            aria-required="{% if field.field.required %}true{% else %}false{% endif %}"
+                    >
+                        <label for="{{ field.id_for_label }}" class="col-md-4 col-form-label text-md-right">
+                            {{ field.label }}{% if field.field.required %}
+                            <span class="required">*</span>{% endif %}
+                        </label>
+                        <div class="col-md-6">
+                            {{ field|addclass:"form-control" }}
+                        </div>
+                    </div>
+                        {% endfor %}
+                    <div class="card">
+
+                        <button type="submit" class="btn btn-outline-dark">
+                            Сохранить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
