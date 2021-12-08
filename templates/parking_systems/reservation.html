@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %} Бронирование {{ collection.name }} {% endblock %}
+{% block header %} {{ reservation }}{% endblock %}
+{% block content %}
+    <div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'parking_systems:index' %}">Парковочные места</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ reservation }}</li>
+        </ol>
+    </nav>
+    <p> Вы забронировали парковочное место № {{ reservation.parking_space.id }} </p>
+        <hr>
+{% endblock %}
+</div>

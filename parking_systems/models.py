@@ -1,13 +1,10 @@
-from datetime import datetime
-
 from django.db import models
 
 
 class Parking(models.Model):
-    number = models.IntegerField(primary_key=True, unique=True, verbose_name='Номер парковочного места')
 
     def __str__(self):
-        return f'Парковочное место № {self.number}'
+        return f'Парковочное место № {self.id}'
 
 
 class Reservation(models.Model):
@@ -18,6 +15,6 @@ class Reservation(models.Model):
 
     class Meta:
         ordering = ['parking_space']
-        constraints = [
-            models.UniqueConstraint(fields=['parking_space', 'start_time'], name='unique_reservation')
-        ]
+
+    def __str__(self):
+        return f'Бронирование № {self.id}'
