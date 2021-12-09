@@ -42,7 +42,8 @@ def reservation(request, reservation_id):
     #TODO: formatting of period representation in template
     reservation = get_object_or_404(Reservation, id=reservation_id)
     period = reservation.finish_time - reservation.start_time
-    return render(request, 'parking_systems/reservation.html', {'reservation': reservation, 'period': period})
+    return render(request, 'parking_systems/reservation.html', {'reservation': reservation, 'period': period,
+                                                                'slot': reservation.parking_space})
 
 
 def update_reservation(request, reservation_id):

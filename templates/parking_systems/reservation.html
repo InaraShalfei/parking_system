@@ -3,12 +3,14 @@
 {% block header %} {{ reservation }}{% endblock %}
 {% block content %}
     <div class="container">
-    <nav aria-label="breadcrumb">
+        <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'parking_systems:index' %}">Парковочные места</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ reservation }}</li>
-        </ol>
-    </nav>
+                <li class="breadcrumb-item"><a href="{% url 'parking_systems:parking_reservations' slot.id %}">Бронирования</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{ reservation }}</li>
+            </ol>
+        </nav>
         <p> Вы забронировали парковочное место № {{ reservation.parking_space.id }}. Период бронирования составит
             {{ period }}. </p>
         <hr>

@@ -4,6 +4,11 @@
 </div>{% endblock %}
 {% block content %}
 <div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Парковочные места</li>
+        </ol>
+    </nav>
     {% if user.is_authenticated %}
     {% for slot in parking_slots %}
     <div><p><strong><a class="p-2 text-dark" href="{% url 'parking_systems:parking_reservations' slot.id %}">{{ slot }}</strong></p>
