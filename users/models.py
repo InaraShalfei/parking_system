@@ -13,8 +13,10 @@ class User(AbstractUser):
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
 
     def has_perm(self, perm, obj=None):
+        if self.is_superuser:
+            return True
         if self.role == 'MANAGER':
             return True
         employee_permissions = ['parking_systems.view_parking', 'parking_systems.view_reservation',
                                 'parking_systems.add_reservation']
-        return perm in employee_permissions
+        return super(User, self).has_perm(perm, obj)
