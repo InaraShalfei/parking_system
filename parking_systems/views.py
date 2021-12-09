@@ -22,6 +22,12 @@ def delete_parking(request, parking_slot):
     return render(request, 'includes/delete_parking.html', {'slot': parking_slot})
 
 
+def parking_reservations(request, parking_slot):
+    parking_slot = get_object_or_404(Parking, id=parking_slot)
+    reservations = parking_slot.reservations.all()
+    return render(request, 'parking_systems/reservations.html', {'reservations': reservations, 'slot': parking_slot})
+
+
 def booking(request):
     form = BookingForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():

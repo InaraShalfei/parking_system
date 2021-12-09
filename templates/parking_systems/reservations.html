@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Брони парковочного места{% endblock %}
+{% block header %}Все бронирования парковочного места{% endblock %}
+{% block content %}
+<div class="container">
+    {% for reservation in reservations %}
+    <p> <strong><a class="p-2 text-dark" href="{% url 'parking_systems:reservation' reservation.id %}"><strong>{{ reservation }}</strong></a></strong> </p>
+    {% if not forloop.last %}
+    {% endif %}
+    {% endfor %}
+
+</div>
+{% endblock %}
