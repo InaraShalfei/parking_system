@@ -1,15 +1,22 @@
 {% extends "base.html" %}
 {% block header %}
-<div class="w3-container w3-green"><strong>Лучшие система для бронирования парковочных мест! </strong>
+<div class="w3-container w3-green"><strong>Лучшая система для бронирования парковочных мест! </strong>
 </div>{% endblock %}
 {% block content %}
 <div class="container">
     {% if user.is_authenticated %}
     {% for slot in parking_slots %}
-    <p><strong>{{ slot }}</strong></p>
+    <div><p><strong>{{ slot }}</strong></p>
+        <a href="{% url 'parking_systems:delete_parking_slot' slot.id %}"
+           class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Удалить парковочное место</a>
+    </div>
     {% endfor %}
-    <a href="{% url 'parking_systems:booking' %}"
-               class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Забронировать</a>
+
+    <p><a href="{% url 'parking_systems:booking' %}"
+          class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Забронировать</a></p>
+    <p><a href="{% url 'parking_systems:add_parking_slot' %}"
+          class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Добавить парковочное место</a></p>
+
     {% endif %}
 </div>
 {% endblock %}

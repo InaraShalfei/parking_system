@@ -9,6 +9,19 @@ def index(request):
     return render(request, 'parking_systems/index.html', {'parking_slots': parking_slots})
 
 
+def add_parking(request):
+    Parking.objects.create()
+    return redirect('parking_systems:index')
+
+
+def delete_parking(request, parking_slot):
+    parking_slot = get_object_or_404(Parking, id=parking_slot)
+    if request.method == 'POST':
+        parking_slot.delete()
+        return redirect('parking_systems:index')
+    return render(request, 'includes/delete_parking.html', {'slot': parking_slot})
+
+
 def booking(request):
     form = BookingForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
