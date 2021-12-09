@@ -8,6 +8,7 @@
 <div class="row justify-content-center">
     <div class="col-md-8 p-5">
         <div class="card">
+
             <div class="card-header">
                 {% if form.instance.id %}
                 Редактировать бронирование
@@ -26,7 +27,11 @@
                         {% endif %}
                 >
 
+                    {% for error in form.non_field_errors %}
+                    {{error}}
+                    {% endfor %}
                     {% csrf_token %}
+
 
                     {% for field in form %}
                     <div

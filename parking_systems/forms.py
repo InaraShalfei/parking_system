@@ -1,4 +1,8 @@
+from datetime import datetime
+
 from django import forms
+from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from django.utils import timezone
 
 from parking_systems.models import Reservation
 
@@ -20,5 +24,12 @@ class BookingForm(forms.ModelForm):
         start_time = self.cleaned_data['start_time']
         finish_time = self.cleaned_data['finish_time']
         if finish_time <= start_time:
-            raise forms.ValidationError('Время окончания не может быть меньше, или равным времени начала бронирования!')
-        return finish_time, start_time
+            self.add_error(NON_FIELD_ERRORS, 'Время окончания не может быть меньше,'
+                                             ' или равным времени начала бронирования!')
+        return finish_time
+
+    def clean_start_time(self):
+        start_time = self.cleaned_data['start_time']
+        if start_time < timezone.now():
+            self.add_error(NON_FIELD_ERRORS, 'Время начала бронирования не может быть меньше текущей даты!')
+        return start_time
