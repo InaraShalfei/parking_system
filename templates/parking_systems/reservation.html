@@ -9,13 +9,14 @@
             <li class="breadcrumb-item active" aria-current="page">{{ reservation }}</li>
         </ol>
     </nav>
-    <p> Вы забронировали парковочное место № {{ reservation.parking_space.id }} </p>
+        <p> Вы забронировали парковочное место № {{ reservation.parking_space.id }}. Период бронирования составит
+            {{ period }}. </p>
         <hr>
         <a href="{% url 'parking_systems:booking' %}"
-               class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Создать новое бронирование</a>
+           class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Создать новое бронирование</a>
         <a href="{% url 'parking_systems:update_reservation' reservation.id %}"
-               class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Редактировать бронирование</a>
+           class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Редактировать бронирование</a>
         <a href="{% url 'parking_systems:delete_reservation' reservation.id %}"
-               class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Удалить бронирование</a>
-{% endblock %}
+           class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Удалить бронирование</a>
+        {% endblock %}
 </div>
