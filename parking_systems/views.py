@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -5,16 +6,19 @@ from parking_systems.forms import BookingForm
 from parking_systems.models import Parking, Reservation
 
 
+@permission_required('parking_systems.view_parking')
 def index(request):
     parking_slots = Parking.objects.all()
     return render(request, 'parking_systems/index.html', {'parking_slots': parking_slots})
 
 
+@permission_required('parking_systems.add_parking')
 def add_parking(request):
     Parking.objects.create()
     return redirect('parking_systems:index')
 
 
+@permission_required('parking_systems.delete_parking')
 def delete_parking(request, parking_slot):
     parking_slot = get_object_or_404(Parking, id=parking_slot)
     if request.method == 'POST':
@@ -23,6 +27,7 @@ def delete_parking(request, parking_slot):
     return render(request, 'includes/delete_parking.html', {'slot': parking_slot})
 
 
+@permission_required('parking_systems.view_reservation')
 def parking_reservations(request, parking_slot):
     parking_slot = get_object_or_404(Parking, id=parking_slot)
     reservations = parking_slot.reservations.all()
@@ -32,6 +37,7 @@ def parking_reservations(request, parking_slot):
     return render(request, 'parking_systems/reservations.html', {'slot': parking_slot, 'page': page})
 
 
+@permission_required('parking_systems.add_reservation')
 def booking(request):
     form = BookingForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
@@ -42,6 +48,7 @@ def booking(request):
     return render(request, 'parking_systems/booking.html', {'form': form})
 
 
+@permission_required('parking_systems.view_reservation')
 def reservation(request, reservation_id):
     #TODO: formatting of period representation in template
     reservation = get_object_or_404(Reservation, id=reservation_id)
@@ -50,6 +57,7 @@ def reservation(request, reservation_id):
                                                                 'slot': reservation.parking_space})
 
 
+@permission_required('parking_systems.change_reservation')
 def update_reservation(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
     form = BookingForm(request.POST or None, instance=reservation)
@@ -59,9 +67,10 @@ def update_reservation(request, reservation_id):
     return render(request, 'parking_systems/booking.html', {'form': form, 'reservation': reservation})
 
 
+@permission_required('parking_systems.delete_reservation')
 def delete_reservation(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
     if request.method == 'POST':
         reservation.delete()
-        return redirect('parking_systems:index')
+        return redirect('parking_systems:reservation', reservation_id=reservation.id)
     return render(request, 'includes/delete_reservation.html', {'reservation': reservation})
