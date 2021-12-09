@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 
 from parking_systems.forms import BookingForm
@@ -25,7 +26,10 @@ def delete_parking(request, parking_slot):
 def parking_reservations(request, parking_slot):
     parking_slot = get_object_or_404(Parking, id=parking_slot)
     reservations = parking_slot.reservations.all()
-    return render(request, 'parking_systems/reservations.html', {'reservations': reservations, 'slot': parking_slot})
+    paginator = Paginator(reservations, 5)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'parking_systems/reservations.html', {'slot': parking_slot, 'page': page})
 
 
 def booking(request):
