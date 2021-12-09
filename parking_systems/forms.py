@@ -15,3 +15,10 @@ class BookingForm(forms.ModelForm):
             'start_time': DateTimeInput,
             'finish_time': DateTimeInput,
         }
+
+    def clean_finish_time(self):
+        start_time = self.cleaned_data['start_time']
+        finish_time = self.cleaned_data['finish_time']
+        if finish_time <= start_time:
+            raise forms.ValidationError('Время окончания не может быть меньше, или равным времени начала бронирования!')
+        return finish_time, start_time
