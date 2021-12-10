@@ -19,7 +19,7 @@
             <div class="card-body">
                 <form
                         method="POST" enctype="multipart/form-data"
-                        {% if form.instance.id %}
+                        {% if form.instance.id and perms.parking_systems.change_reservation %}
                         action="{% url 'parking_systems:update_reservation' reservation.id %}"
                         {% else %}
 

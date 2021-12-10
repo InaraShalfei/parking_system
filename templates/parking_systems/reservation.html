@@ -17,9 +17,13 @@
         <hr>
         <a href="{% url 'parking_systems:booking' %}"
            class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Создать новое бронирование</a>
+        {% if perms.parking_systems.change_reservation %}
         <a href="{% url 'parking_systems:update_reservation' reservation.id %}"
            class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Редактировать бронирование</a>
+        {% endif %}
+        {% if perms.parking_systems.delete_reservation%}
         <a href="{% url 'parking_systems:delete_reservation' reservation.id %}"
            class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Удалить бронирование</a>
+        {% endif %}
         {% endblock %}
 </div>

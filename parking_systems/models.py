@@ -14,7 +14,7 @@ class Reservation(models.Model):
     finish_time = models.DateTimeField(verbose_name='Время окончания брони')
 
     class Meta:
-        ordering = ['parking_space']
+        ordering = ['-start_time']
 
     def __str__(self):
-        return f'Бронирование № {self.id}'
+        return f'Бронирование № {self.id} (c {self.start_time} по {self.finish_time})'
