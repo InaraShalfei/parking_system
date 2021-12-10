@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from django.contrib.auth.decorators import permission_required
+from django.db.models import Q
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -42,7 +45,19 @@ def booking(request):
     form = BookingForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         reservation = form.save(commit=False)
-        reservation.parking_space = Parking.objects.first()
+        start_time =form.cleaned_data['start_time']
+        finish_time = form.cleaned_data['finish_time']
+        occupied_parkings = Reservation.objects.filter(Q(
+                start_time__lt=start_time,
+                finish_time__gt=start_time
+            ) | Q(
+                start_time__lt=finish_time,
+                finish_time__gt=finish_time
+            ) | Q(
+                start_time__gt=start_time,
+                finish_time__lt=finish_time
+            )).values('parking_space_id')
+        reservation.parking_space = Parking.objects.exclude(id__in=occupied_parkings).first()
         reservation.save()
         return redirect('parking_systems:reservation', reservation_id=reservation.id)
     return render(request, 'parking_systems/booking.html', {'form': form})
@@ -50,7 +65,6 @@ def booking(request):
 
 @permission_required('parking_systems.view_reservation')
 def reservation(request, reservation_id):
-    #TODO: formatting of period representation in template
     reservation = get_object_or_404(Reservation, id=reservation_id)
     period = reservation.finish_time - reservation.start_time
     return render(request, 'parking_systems/reservation.html', {'reservation': reservation, 'period': period,
