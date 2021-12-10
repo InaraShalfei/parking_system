@@ -72,5 +72,5 @@ def delete_reservation(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
     if request.method == 'POST':
         reservation.delete()
-        return redirect('parking_systems:reservation', reservation_id=reservation.id)
+        return redirect('parking_systems:parking_reservations', parking_slot=reservation.parking_space.id)
     return render(request, 'includes/delete_reservation.html', {'reservation': reservation})
