@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth.decorators import permission_required
+from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
@@ -48,18 +49,22 @@ def booking(request):
         start_time =form.cleaned_data['start_time']
         finish_time = form.cleaned_data['finish_time']
         occupied_parkings = Reservation.objects.filter(Q(
-                start_time__lt=start_time,
-                finish_time__gt=start_time
+                start_time__lte=start_time,
+                finish_time__gte=start_time
             ) | Q(
-                start_time__lt=finish_time,
-                finish_time__gt=finish_time
+                start_time__lte=finish_time,
+                finish_time__gte=finish_time
             ) | Q(
-                start_time__gt=start_time,
-                finish_time__lt=finish_time
+                start_time__gte=start_time,
+                finish_time__lte=finish_time
             )).values('parking_space_id')
-        reservation.parking_space = Parking.objects.exclude(id__in=occupied_parkings).first()
-        reservation.save()
-        return redirect('parking_systems:reservation', reservation_id=reservation.id)
+        free_parking = Parking.objects.exclude(id__in=occupied_parkings).first()
+        if free_parking:
+            reservation.parking_space = free_parking
+            reservation.save()
+            return redirect('parking_systems:reservation', reservation_id=reservation.id)
+        else:
+            form.add_error(NON_FIELD_ERRORS, 'Нет свободных парковочных мест')
     return render(request, 'parking_systems/booking.html', {'form': form})
 
 

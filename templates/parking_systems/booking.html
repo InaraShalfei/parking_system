@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Бронирование{% endblock %}
 <h1>{% block header %}{% endblock %}</h1>
-
-
 {% block content %}
 {% load user_filters %}
 <div class="row justify-content-center">
@@ -26,10 +24,13 @@
                         action="{% url 'parking_systems:booking' %}"
                         {% endif %}
                 >
-
-                    {% for error in form.non_field_errors %}
-                    {{error}}
-                    {% endfor %}
+                    <table>
+                        {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                    </table>
                     {% csrf_token %}
 
 
