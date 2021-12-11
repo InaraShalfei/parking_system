@@ -17,4 +17,5 @@ class Reservation(models.Model):
         ordering = ['-start_time']
 
     def __str__(self):
-        return f'Бронирование № {self.id} (c {self.start_time} по {self.finish_time})'
+        format = "%d.%m.%y %H:%M"
+        return f'Бронирование №{self.id} (c {self.start_time.strftime(format)} по {self.finish_time.strftime(format)})'
