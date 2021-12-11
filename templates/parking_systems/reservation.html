@@ -3,11 +3,11 @@
 {% block header %} {{ reservation }}{% endblock %}
 {% block content %}
 {% load parking_system_filters %}
-    <div class="container">
+    <div>
         <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'parking_systems:index' %}">Парковочные места</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'parking_systems:parking_reservations' slot.id %}">Бронирования</a>
+                <li class="breadcrumb-item"><a href="{% url 'parking_systems:parking_reservations' slot.id %}">{{ slot }}</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">{{ reservation }}</li>
             </ol>
@@ -16,14 +16,14 @@
             {{ period|timedelta_filter }} </p>
         <hr>
         <a href="{% url 'parking_systems:booking' %}"
-           class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Создать новое бронирование</a>
+           class="btn btn-success btn-sm" role="button" aria-pressed="true">Создать новое бронирование</a>
         {% if perms.parking_systems.change_reservation %}
         <a href="{% url 'parking_systems:update_reservation' reservation.id %}"
-           class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Редактировать бронирование</a>
+           class="btn btn-warning btn-sm" role="button" aria-pressed="true">Редактировать бронирование</a>
         {% endif %}
         {% if perms.parking_systems.delete_reservation%}
         <a href="{% url 'parking_systems:delete_reservation' reservation.id %}"
-           class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Удалить бронирование</a>
+           class="btn btn-danger btn-sm" role="button" aria-pressed="true">Удалить бронирование</a>
         {% endif %}
         {% endblock %}
 </div>

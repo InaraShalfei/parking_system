@@ -2,11 +2,11 @@
 {% block title %}Брони парковочного места{% endblock %}
 {% block header %}Все бронирования парковочного места{% endblock %}
 {% block content %}
-<div class="container">
+<div>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'parking_systems:index' %}">Парковочные места</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Бронирования</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ slot }}</li>
         </ol>
     </nav>
     {% for reservation in page %}
