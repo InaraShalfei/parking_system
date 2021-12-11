@@ -64,7 +64,7 @@ def booking(request):
             reservation.save()
             return redirect('parking_systems:reservation', reservation_id=reservation.id)
         else:
-            form.add_error(NON_FIELD_ERRORS, 'Нет свободных парковочных мест')
+            form.add_error(NON_FIELD_ERRORS, 'Нет свободных парковочных мест!')
     return render(request, 'parking_systems/booking.html', {'form': form})
 
 
@@ -79,10 +79,26 @@ def reservation(request, reservation_id):
 @permission_required('parking_systems.change_reservation')
 def update_reservation(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
+    parking_slot_reservations = reservation.parking_space.reservations
     form = BookingForm(request.POST or None, instance=reservation)
     if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect('parking_systems:reservation', reservation_id=reservation.id)
+        start_time = form.cleaned_data['start_time']
+        finish_time = form.cleaned_data['finish_time']
+        occupied_time = parking_slot_reservations.filter(Q(
+            start_time__lte=start_time,
+            finish_time__gte=start_time
+        ) | Q(
+            start_time__lte=finish_time,
+            finish_time__gte=finish_time
+        ) | Q(
+            start_time__gte=start_time,
+            finish_time__lte=finish_time
+        )).exclude(id=reservation.id).exists()
+        if not occupied_time:
+            form.save()
+            return redirect('parking_systems:reservation', reservation_id=reservation.id)
+        else:
+            form.add_error(NON_FIELD_ERRORS, 'Выбранное время занято для данного парковочного места!')
     return render(request, 'parking_systems/booking.html', {'form': form, 'reservation': reservation})
 
 
