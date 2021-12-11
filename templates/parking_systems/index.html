@@ -1,31 +1,33 @@
 {% extends "base.html" %}
 {% block header %}
-<div class="w3-container w3-green"><strong>Лучшая система для бронирования парковочных мест! </strong>
-</div>{% endblock %}
+<div>Система бронирования парковочных мест</div>
+{% endblock %}
 {% block content %}
-<div class="container">
+<div>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active" aria-current="page">Парковочные места</li>
         </ol>
     </nav>
     {% if user.is_authenticated %}
+
     {% for slot in parking_slots %}
     <div class="p-2">
-        <a class="p-2 text-dark" href="{% url 'parking_systems:parking_reservations' slot.id %}">{{ slot }}</a>
+        <a class="py-2 text-dark" href="{% url 'parking_systems:parking_reservations' slot.id %}">{{ slot }}</a>
         {% if perms.parking_systems.delete_parking %}
         <a href="{% url 'parking_systems:delete_parking_slot' slot.id %}"
-           class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Удалить парковочное место</a>
+           class="btn btn-danger btn-sm" role="button" aria-pressed="true">Удалить</a>
         {% endif %}
     </div>
     {% endfor %}
 
-    <div>
+
+    <div class="text-right">
         <a href="{% url 'parking_systems:booking' %}"
-            class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Забронировать</a>
+            class="btn btn-success btn-sm" role="button" aria-pressed="true">Забронировать</a>
         {% if perms.parking_systems.add_parking %}
         <a href="{% url 'parking_systems:add_parking_slot' %}"
-           class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Добавить парковочное место</a>
+           class="btn btn-success btn-sm" role="button" aria-pressed="true">Добавить парковочное место</a>
         {% endif %}
     </div>
     {% endif %}
