@@ -7,8 +7,11 @@ from django.utils import timezone
 from parking_systems.models import Reservation
 
 
-class DateTimeInput(forms.DateInput):
+class DateTimeInput(forms.DateTimeInput):
     input_type = 'datetime-local'
+
+    def __init__(self, attrs=None):
+        super().__init__(attrs, format='%Y-%m-%dT%H:%M')
 
 
 class BookingForm(forms.ModelForm):
