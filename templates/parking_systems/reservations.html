@@ -10,12 +10,11 @@
         </ol>
     </nav>
     {% for reservation in page %}
-    <p> <strong><a class="p-2 text-dark" href="{% url 'parking_systems:reservation' reservation.id %}"><strong>{{ reservation }}</strong></a></strong> </p>
-    {% if not forloop.last %}
-    {% endif %}
+    <div class="p-2"><a class="p-2 text-dark" href="{% url 'parking_systems:reservation' reservation.id %}">
+        {{ reservation }}</a></div>
     {% endfor %}
-{% if page.has_other_pages %}
-{% include "includes/paginator.html" with items=page paginator=paginator%}
-{% endif %}
+    {% if page.has_other_pages %}
+    {% include "includes/paginator.html" with items=page paginator=paginator%}
+    {% endif %}
 </div>
 {% endblock %}

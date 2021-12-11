@@ -11,8 +11,8 @@
     </nav>
     {% if user.is_authenticated %}
     {% for slot in parking_slots %}
-    <div><p><strong><a class="p-2 text-dark" href="{% url 'parking_systems:parking_reservations' slot.id %}">{{ slot }}</strong>
-    </p>
+    <div class="p-2">
+        <a class="p-2 text-dark" href="{% url 'parking_systems:parking_reservations' slot.id %}">{{ slot }}</a>
         {% if perms.parking_systems.delete_parking %}
         <a href="{% url 'parking_systems:delete_parking_slot' slot.id %}"
            class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Удалить парковочное место</a>
@@ -20,12 +20,14 @@
     </div>
     {% endfor %}
 
-    <p><a href="{% url 'parking_systems:booking' %}"
-          class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Забронировать</a></p>
-    {% if perms.parking_systems.add_parking %}
-    <p><a href="{% url 'parking_systems:add_parking_slot' %}"
-          class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Добавить парковочное место</a></p>
-    {% endif %}
+    <div>
+        <a href="{% url 'parking_systems:booking' %}"
+            class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Забронировать</a>
+        {% if perms.parking_systems.add_parking %}
+        <a href="{% url 'parking_systems:add_parking_slot' %}"
+           class="btn btn-outline-secondary btn-sm" role="button" aria-pressed="true">Добавить парковочное место</a>
+        {% endif %}
+    </div>
     {% endif %}
 </div>
 {% endblock %}
