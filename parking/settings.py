@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-g$dk%vki=ps^171ncz%92!i&o$)m62^yztfvac@m4m8ac*6pzd
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['51.250.9.121', 'localhost', ]
+ALLOWED_HOSTS = ['51.250.9.121', 'localhost', '127.0.0.1', 'web']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -53,11 +53,14 @@ WSGI_APPLICATION = 'parking.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -85,7 +88,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
