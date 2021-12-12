@@ -1,10 +1,8 @@
-from datetime import datetime
-
 from django.contrib.auth.decorators import permission_required
-from django.core.exceptions import ObjectDoesNotExist, NON_FIELD_ERRORS
-from django.db.models import Q
+from django.core.exceptions import NON_FIELD_ERRORS
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
+from django.shortcuts import get_object_or_404, redirect, render
 
 from parking_systems.forms import BookingForm
 from parking_systems.models import Parking, Reservation
@@ -46,18 +44,18 @@ def booking(request):
     form = BookingForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         reservation = form.save(commit=False)
-        start_time =form.cleaned_data['start_time']
+        start_time = form.cleaned_data['start_time']
         finish_time = form.cleaned_data['finish_time']
         occupied_parkings = Reservation.objects.filter(Q(
-                start_time__lte=start_time,
-                finish_time__gte=start_time
-            ) | Q(
-                start_time__lte=finish_time,
-                finish_time__gte=finish_time
-            ) | Q(
-                start_time__gte=start_time,
-                finish_time__lte=finish_time
-            )).values('parking_space_id')
+            start_time__lte=start_time,
+            finish_time__gte=start_time
+        ) | Q(
+            start_time__lte=finish_time,
+            finish_time__gte=finish_time
+        ) | Q(
+            start_time__gte=start_time,
+            finish_time__lte=finish_time
+        )).values('parking_space_id')
         free_parking = Parking.objects.exclude(id__in=occupied_parkings).first()
         if free_parking:
             reservation.parking_space = free_parking

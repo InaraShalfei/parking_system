@@ -14,4 +14,4 @@ urlpatterns = [
     path('booking/<int:reservation_id>/update', views.update_reservation, name='update_reservation'),
     path('booking/<int:reservation_id>/delete', views.delete_reservation, name='delete_reservation'),
 
-    ]
+]

@@ -1,7 +1,5 @@
-from datetime import datetime
-
 from django import forms
-from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from django.core.exceptions import NON_FIELD_ERRORS
 from django.utils import timezone
 
 from parking_systems.models import Reservation
