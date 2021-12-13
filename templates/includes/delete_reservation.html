@@ -1,8 +1,0 @@
-{% load static %}
-<link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
-<form method="post" action="">
-   {% csrf_token %}
-     <h1>Вы уверены, что хотите удалить бронирование?</h1><br>
-     <input class="btn btn-danger" type="submit" value="Да" />
-     <a href="{% url 'parking_systems:reservation' reservation.id %}"><div class="btn btn-secondary">Отменить</div></a>
-</form>

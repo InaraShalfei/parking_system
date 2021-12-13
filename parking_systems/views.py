@@ -26,7 +26,6 @@ def delete_parking(request, parking_slot):
     if request.method == 'POST':
         parking_slot.delete()
         return redirect('parking_systems:index')
-    return render(request, 'includes/delete_parking.html', {'slot': parking_slot})
 
 
 @permission_required('parking_systems.view_reservation')
