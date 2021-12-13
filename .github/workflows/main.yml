@@ -43,6 +43,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    needs: build_backend
     if:
       contains('
         refs/heads/main
