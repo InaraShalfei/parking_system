@@ -13,6 +13,8 @@ class User(AbstractUser):
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
 
     def has_perm(self, perm, obj=None):
+        if self.role is None:
+            return False
         if self.is_superuser:
             return True
         if self.role == self.MANAGER:
