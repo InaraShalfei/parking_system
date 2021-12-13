@@ -3,27 +3,53 @@
 {% block header %} {{ reservation }}{% endblock %}
 {% block content %}
 {% load parking_system_filters %}
-    <div>
-        <nav aria-label="breadcrumb">
+<div>
+    <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'parking_systems:index' %}">Парковочные места</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'parking_systems:parking_reservations' slot.id %}">{{ slot }}</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">{{ reservation }}</li>
-            </ol>
-        </nav>
-        <p> Вы забронировали парковочное место № {{ reservation.parking_space.id }}. Период бронирования составит
-            {{ period|timedelta_filter }} </p>
-        <hr>
-        <a href="{% url 'parking_systems:booking' %}"
-           class="btn btn-success btn-sm" role="button" aria-pressed="true">Создать новое бронирование</a>
-        {% if perms.parking_systems.change_reservation %}
-        <a href="{% url 'parking_systems:update_reservation' reservation.id %}"
-           class="btn btn-warning btn-sm" role="button" aria-pressed="true">Редактировать бронирование</a>
-        {% endif %}
-        {% if perms.parking_systems.delete_reservation%}
-        <a href="{% url 'parking_systems:delete_reservation' reservation.id %}"
-           class="btn btn-danger btn-sm" role="button" aria-pressed="true">Удалить бронирование</a>
-        {% endif %}
-        {% endblock %}
+            <li class="breadcrumb-item"><a href="{% url 'parking_systems:parking_reservations' slot.id %}">
+                {{ slot }}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ reservation }}</li>
+        </ol>
+    </nav>
+    <p> Вы забронировали парковочное место № {{ reservation.parking_space.id }}. Период бронирования составит
+        {{ period|timedelta_filter }} </p>
+    <hr>
+    <a href="{% url 'parking_systems:booking' %}"
+       class="btn btn-success btn-sm" role="button" aria-pressed="true">Создать бронирование</a>
+    {% if perms.parking_systems.change_reservation %}
+    <a href="{% url 'parking_systems:update_reservation' reservation.id %}"
+       class="btn btn-warning btn-sm" role="button" aria-pressed="true">Редактировать бронирование</a>
+    {% endif %}
+    {% if perms.parking_systems.delete_reservation%}
+    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmModal">
+       Удалить бронирование
+    </button>
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Подтверждение удаления</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Вы уверены, что хотите удалить бронирование?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <form method="post" action="{% url 'parking_systems:delete_reservation' reservation.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#confirmModal">
+                            Удалить
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endblock %}
 </div>
