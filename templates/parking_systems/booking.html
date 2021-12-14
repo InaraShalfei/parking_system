@@ -24,6 +24,9 @@
                         action="{% url 'parking_systems:booking' %}"
                         {% endif %}
                 >
+                    <div class="alert alert-info" role="alert">
+                            Выберите время бронирования. Парковочное место будет назначено автоматически.
+                        </div>
                         {% for error in form.non_field_errors %}
                         <div class="alert alert-danger" role="alert">
                             {{ error }}
@@ -47,13 +50,13 @@
                     </div>
                     {% endfor %}
 
-<div class="text-right">
-                    <button type="submit" class="btn btn-primary">
-                        Сохранить
-                    </button>
-                    <a class="btn btn-secondary"
-                       href="{% url 'parking_systems:index' %}">Отменить</a>
-</div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">
+                            Сохранить
+                        </button>
+                        <a class="btn btn-secondary"
+                           href="{% url 'parking_systems:index' %}">Отменить</a>
+                    </div>
                 </form>
             </div>
         </div>
